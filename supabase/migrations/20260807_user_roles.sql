@@ -1,45 +1,29 @@
--- Migration: User and Admin Entry Roles Table & Seed Data
+-- Migration: System Users Table & Initial Seed Accounts
 -- Date: 2026-08-07
 
--- 1. System Users Table
+-- 1. Create System Users Table (Keyed by User ID)
 CREATE TABLE IF NOT EXISTS system_users (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    email VARCHAR(255) UNIQUE NOT NULL,
+    user_id VARCHAR(50) PRIMARY KEY,
     password_hash VARCHAR(255) NOT NULL,
     full_name VARCHAR(100) NOT NULL,
-    entry_role VARCHAR(50) NOT NULL DEFAULT 'User', -- 'Admin' or 'User'
-    department VARCHAR(100),
-    is_active BOOLEAN DEFAULT TRUE,
-    last_login TIMESTAMPTZ,
+    role VARCHAR(50) NOT NULL CHECK (role IN ('Admin', 'Finance Head', 'Maker', 'Authoriser', 'Auditor')),
+    department VARCHAR(100) NOT NULL DEFAULT 'Treasury',
+    is_active BOOLEAN NOT NULL DEFAULT TRUE,
     created_at TIMESTAMPTZ DEFAULT now(),
     updated_at TIMESTAMPTZ DEFAULT now()
 );
 
--- 2. User Detailed Roles Table (Mapping users to specific operational roles)
-CREATE TABLE IF NOT EXISTS user_roles (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    user_id UUID REFERENCES system_users(id) ON DELETE CASCADE,
-    role VARCHAR(50) NOT NULL CHECK (role IN ('Admin', 'Finance Head', 'Maker', 'Authoriser', 'Auditor', 'User')),
-    granted_at TIMESTAMPTZ DEFAULT now(),
-    granted_by UUID
-);
-
--- 3. Seed Initial Accounts for Admin and User Entry Roles
-INSERT INTO system_users (id, email, password_hash, full_name, entry_role, department)
+-- 2. Seed Initial User Accounts (User ID / Password)
+INSERT INTO system_users (user_id, password_hash, full_name, role, department)
 VALUES 
-    ('a0000000-0000-0000-0000-000000000001', 'admin@treasury.com', '$2a$10$e8T7l0X...seeded_hash', 'System Administrator', 'Admin', 'IT & Governance'),
-    ('u0000000-0000-0000-0000-000000000002', 'finance.head@treasury.com', '$2a$10$e8T7l0X...seeded_hash', 'Eleanor Vance', 'User', 'Corporate Finance'),
-    ('u0000000-0000-0000-0000-000000000003', 'maker@treasury.com', '$2a$10$e8T7l0X...seeded_hash', 'Marcus Sterling', 'User', 'Treasury Operations'),
-    ('u0000000-0000-0000-0000-000000000004', 'authoriser@treasury.com', '$2a$10$e8T7l0X...seeded_hash', 'Sophia Chen', 'User', 'Risk & Compliance'),
-    ('u0000000-0000-0000-0000-000000000005', 'auditor@treasury.com', '$2a$10$e8T7l0X...seeded_hash', 'David Miller', 'User', 'Internal Audit')
-ON CONFLICT (email) DO NOTHING;
-
--- 4. Seed Operational Roles
-INSERT INTO user_roles (user_id, role)
-VALUES 
-    ('a0000000-0000-0000-0000-000000000001', 'Admin'),
-    ('u0000000-0000-0000-0000-000000000002', 'Finance Head'),
-    ('u0000000-0000-0000-0000-000000000003', 'Maker'),
-    ('u0000000-0000-0000-0000-000000000004', 'Authoriser'),
-    ('u0000000-0000-0000-0000-000000000005', 'Auditor')
-ON CONFLICT DO NOTHING;
+    ('ADMIN',      'Admin@123',   'System Administrator', 'Admin',        'IT & Governance'),
+    ('FINANCE01',  'Finance@123', 'Eleanor Vance',       'Finance Head', 'Corporate Finance'),
+    ('MAKER01',    'Maker@123',   'Marcus Sterling',     'Maker',        'Treasury Operations'),
+    ('AUTH01',     'Auth@123',    'Sophia Chen',         'Authoriser',   'Risk & Approvals'),
+    ('AUDIT01',    'Audit@123',   'David Miller',        'Auditor',      'Internal Audit')
+ON CONFLICT (user_id) DO UPDATE SET
+    password_hash = EXCLUDED.password_hash,
+    full_name = EXCLUDED.full_name,
+    role = EXCLUDED.role,
+    department = EXCLUDED.department,
+    is_active = TRUE;
