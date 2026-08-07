@@ -1,10 +1,11 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { DashboardLayout } from './components/layout/DashboardLayout'
 
-// Lazy loading pages for performance (simulated here with standard imports for simplicity)
 import Dashboard from './pages/Dashboard'
 import LoanWizard from './pages/LoanWizard'
+import LoanTransaction from './pages/LoanTransaction'
+import LoanReport from './pages/LoanReport'
 import ApprovalInbox from './pages/ApprovalInbox'
 import MasterData from './pages/MasterData'
 import UserProvisioning from './pages/UserProvisioning'
@@ -18,7 +19,13 @@ function App() {
         <Routes>
           <Route element={<DashboardLayout />}>
             <Route path="/" element={<Dashboard />} />
-            <Route path="/loan-wizard" element={<LoanWizard />} />
+            
+            {/* Loan Module Tree Routes */}
+            <Route path="/loan/master" element={<LoanWizard />} />
+            <Route path="/loan/transaction" element={<LoanTransaction />} />
+            <Route path="/loan/reports" element={<LoanReport />} />
+            <Route path="/loan-wizard" element={<Navigate to="/loan/master" replace />} />
+            
             <Route path="/approval" element={<ApprovalInbox />} />
             <Route path="/master-data" element={<MasterData />} />
             <Route path="/admin/provision" element={<UserProvisioning />} />
@@ -28,6 +35,5 @@ function App() {
     </QueryClientProvider>
   )
 }
-
 
 export default App
