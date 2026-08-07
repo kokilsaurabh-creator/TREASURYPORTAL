@@ -16,8 +16,8 @@ export function LoginPad() {
   const { login } = useAuthStore()
   
   // Login Form States
-  const [userId, setUserId] = useState('MAKER01')
-  const [password, setPassword] = useState('Maker@123')
+  const [userId, setUserId] = useState('')
+  const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [rememberMe, setRememberMe] = useState(true)
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -62,18 +62,18 @@ export function LoginPad() {
               <Building2 size={14} />
             </div>
             <span className="text-xs font-semibold uppercase tracking-widest bg-gradient-to-r from-emerald-400 to-indigo-300 bg-clip-text text-transparent">
-              Enterprise Treasury System
+              Enterprise Treasury Suite
             </span>
           </div>
 
-          {/* Heading: Removed APEX as requested */}
+          {/* Heading */}
           <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-100 tracking-tight">
             TREASURY MANAGEMENT SYSTEM
           </h1>
           
-          {/* Subtitle: Updated as requested */}
-          <p className="text-xs sm:text-sm text-slate-400 max-w-sm mx-auto">
-            Corporate Term Loan Amortization & Portfolio Management System
+          {/* Executive Enterprise Subtitle */}
+          <p className="text-xs sm:text-sm text-slate-400 max-w-sm mx-auto leading-relaxed">
+            Integrated Enterprise Suite for Liquidity, Debt Capital & Treasury Risk Operations
           </p>
         </div>
 
