@@ -39,8 +39,8 @@ export default function LoanReport() {
 
         <div className="glass-panel p-5 rounded-2xl border border-slate-800 bg-slate-900/60">
           <span className="text-xs font-semibold text-slate-400">YTD Interest Accrued</span>
-          <p className="text-2xl font-extrabold text-amber-400 font-mono mt-1">₹ 4,12,50,000</p>
-          <span className="text-[11px] text-amber-400/80 font-medium"> Actual/365 Day Count Basis</span>
+          <p className="text-2xl font-extrabold text-blue-400 font-mono mt-1">₹ 4,12,50,000</p>
+          <span className="text-[11px] text-blue-400/80 font-medium"> Actual/365 Day Count Basis</span>
         </div>
       </div>
 

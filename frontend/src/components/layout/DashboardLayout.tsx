@@ -36,11 +36,11 @@ export function DashboardLayout() {
   return (
     <div className="min-h-screen flex flex-col md:flex-row bg-slate-950">
       {/* Sidebar Navigation */}
-      <aside className="w-full md:w-64 glass-panel border-r border-slate-800 p-5 flex flex-col gap-6 sticky top-0 md:h-screen z-10 font-sans">
+      <aside className="w-full md:w-64 glass-card p-5 flex flex-col gap-6 sticky top-0 md:h-screen z-10 font-sans border-r-0 rounded-r-3xl my-2 ml-2">
         
         {/* Brand Header */}
         <div className="flex items-center gap-3 px-2">
-          <div className="h-8 w-8 rounded-lg bg-gradient-to-tr from-emerald-500 to-indigo-500 flex items-center justify-center shadow-lg shadow-emerald-500/20">
+          <div className="h-8 w-8 rounded-lg bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/20">
             <span className="font-bold text-white tracking-tighter">TM</span>
           </div>
           <div>
@@ -69,7 +69,7 @@ export function DashboardLayout() {
                 )}
               >
                 <div className="flex items-center gap-3">
-                  <Landmark size={18} className={cn("transition-colors", isLoanActive ? "text-emerald-400" : "text-slate-500 group-hover:text-slate-300")} />
+                  <Landmark size={18} className={cn("transition-colors", isLoanActive ? "text-blue-400" : "text-slate-500 group-hover:text-slate-300")} />
                   <span>Loans</span>
                 </div>
                 {isLoansExpanded ? (
@@ -126,7 +126,7 @@ export function DashboardLayout() {
         <div className="pt-4 border-t border-slate-800/80">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3 min-w-0">
-              <div className="h-9 w-9 rounded-full bg-gradient-to-br from-emerald-500/20 to-indigo-500/20 border border-emerald-500/30 flex items-center justify-center font-bold text-emerald-400 text-xs shrink-0">
+              <div className="h-9 w-9 rounded-full bg-gradient-to-br from-blue-500/20 to-indigo-500/20 border border-blue-500/30 flex items-center justify-center font-bold text-blue-400 text-xs shrink-0">
                 {(userProfile?.fullName || userProfile?.userId || role).charAt(0)}
               </div>
               <div className="min-w-0">
@@ -134,8 +134,8 @@ export function DashboardLayout() {
                   {userProfile?.fullName || userProfile?.userId || role}
                 </p>
                 <div className="flex items-center gap-1">
-                  <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                  <span className="text-[10px] font-medium text-emerald-400 truncate">
+                  <span className="inline-block w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse" />
+                  <span className="text-[10px] font-medium text-blue-400 truncate">
                     {role}
                   </span>
                 </div>
@@ -155,17 +155,17 @@ export function DashboardLayout() {
 
       {/* Main Content Area */}
       <main className="flex-1 p-6 md:p-10 max-w-[1400px] mx-auto w-full">
-        <header className="flex justify-between items-center mb-8 glass-panel rounded-2xl p-4">
+        <header className="flex justify-between items-center mb-8 glass-header rounded-2xl p-4">
           <div className="relative w-full max-w-md">
             <input 
               type="text" 
               placeholder="Search loans, transactions, reports, GL mappings..." 
-              className="w-full bg-slate-900/50 border border-slate-800 rounded-lg pl-4 pr-10 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 text-sm text-slate-200 placeholder:text-slate-500"
+              className="w-full glass-input rounded-lg pl-4 pr-10 py-2 text-sm"
             />
           </div>
           <div className="flex items-center gap-3">
             <div className="px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-xs text-slate-400 flex items-center gap-1.5">
-              <ShieldCheck size={14} className="text-emerald-400" />
+              <ShieldCheck size={14} className="text-blue-400" />
               <span>{role} Session</span>
             </div>
             <button className="relative p-2 rounded-full hover:bg-slate-800 transition-colors cursor-pointer">
@@ -194,14 +194,14 @@ function NavLink({ to, icon, label, badge, isTreeChild }: { to: string; icon: Re
         "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all group relative",
         isTreeChild && "py-2 text-xs font-semibold",
         isActive 
-          ? "bg-emerald-500/10 text-emerald-400 font-bold" 
+          ? "bg-blue-600/15 text-blue-400 font-semibold border border-blue-500/20" 
           : "text-slate-400 hover:text-slate-100 hover:bg-slate-900/50"
       )}
     >
       {isActive && (
-        <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-5 bg-emerald-500 rounded-r-full" />
+        <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-5 bg-blue-500 rounded-r-full shadow-[0_0_8px_rgba(59,130,246,0.8)]" />
       )}
-      <span className={cn("transition-colors", isActive ? "text-emerald-400" : "text-slate-500 group-hover:text-slate-300")}>
+      <span className={cn("transition-colors", isActive ? "text-blue-400" : "text-slate-500 group-hover:text-slate-300")}>
         {icon}
       </span>
       <span>{label}</span>

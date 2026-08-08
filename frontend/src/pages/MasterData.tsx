@@ -100,10 +100,12 @@ export default function MasterData() {
       })
     }
 
-    const encodedUri = encodeURI(csvContent)
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
+    const url = URL.createObjectURL(blob)
     const link = document.createElement('a')
-    link.setAttribute('href', encodedUri)
+    link.setAttribute('href', url)
     link.setAttribute('download', filename)
+    link.style.visibility = 'hidden'
     document.body.appendChild(link)
     link.click()
     document.body.removeChild(link)
@@ -126,6 +128,29 @@ export default function MasterData() {
     reader.onload = (evt) => {
       const text = evt.target?.result as string
       if (text) {
+        const lines = text.split('\n').filter(line => line.trim())
+        if (lines.length > 1) {
+          const dataLines = lines.slice(1)
+          if (activeTab === 'GL_MAPPING') {
+             const newData = dataLines.map(line => {
+                const cols = line.split(',')
+                return { id: Date.now().toString() + Math.random(), bukrs: cols[0], loan_type: cols[1], principal_gl: cols[2], interest_exp_gl: cols[3], interest_accrual_gl: cols[4], bank_clearing_gl: cols[5] }
+             })
+             setGlData([...glData, ...newData])
+          } else if (activeTab === 'ROI') {
+             const newData = dataLines.map(line => {
+                const cols = line.split(',')
+                return { id: Date.now().toString() + Math.random(), bank_id: cols[0], effective_from: cols[1], rate: parseFloat(cols[2]) || 0, calc_basis: cols[3], compounding_freq: cols[4] }
+             })
+             setRoiData([...roiData, ...newData])
+          } else if (activeTab === 'LIMITS') {
+             const newData = dataLines.map(line => {
+                const cols = line.split(',')
+                return { id: Date.now().toString() + Math.random(), bukrs: cols[0], hbkid: cols[1], hktid: cols[2], limit_lc: parseFloat(cols[3]) || 0, limit_fc: parseFloat(cols[4]) || 0, waers: cols[5], valid_from: cols[6], valid_to: cols[7] }
+             })
+             setLimitsData([...limitsData, ...newData])
+          }
+        }
         showNotification(`Successfully imported data from ${file.name}`)
       }
     }
@@ -205,23 +230,23 @@ export default function MasterData() {
         <div className="flex items-center gap-3">
           <button 
             onClick={handleImportTrigger}
-            className="px-3.5 py-2 bg-slate-900 border border-slate-800 hover:bg-slate-800 text-slate-200 rounded-xl text-xs font-semibold flex items-center gap-2 transition-all cursor-pointer"
+            className="px-4 py-2 btn-secondary rounded-xl text-xs flex items-center gap-2 cursor-pointer"
           >
-            <Upload size={14} className="text-indigo-400" />
+            <Upload size={14} className="text-violet-400" />
             <span>Import Data</span>
           </button>
 
           <button 
             onClick={handleExportCSV}
-            className="px-3.5 py-2 bg-slate-900 border border-slate-800 hover:bg-slate-800 text-slate-200 rounded-xl text-xs font-semibold flex items-center gap-2 transition-all cursor-pointer"
+            className="px-4 py-2 btn-secondary rounded-xl text-xs flex items-center gap-2 cursor-pointer"
           >
-            <Download size={14} className="text-emerald-400" />
+            <Download size={14} className="text-blue-400" />
             <span>Export CSV</span>
           </button>
 
           <button 
             onClick={() => setIsAddModalOpen(true)}
-            className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold flex items-center gap-2 transition-all shadow-lg shadow-emerald-900/40 cursor-pointer"
+            className="px-5 py-2 btn-primary rounded-xl text-xs flex items-center gap-2 cursor-pointer"
           >
             <Plus size={16} />
             <span>Add Entry</span>
@@ -243,18 +268,18 @@ export default function MasterData() {
       </div>
 
       {/* Master Data Table Container */}
-      <div className="glass-panel rounded-2xl border border-slate-800 bg-slate-900/70 shadow-2xl overflow-hidden">
+      <div className="glass-card rounded-2xl overflow-hidden">
         
         {/* Table Toolbar Header */}
         <div className="p-4 border-b border-slate-800/80 bg-slate-950/60 flex items-center justify-between">
-          <div className="flex items-center gap-2 text-amber-400 text-xs font-medium bg-amber-500/10 px-3 py-1.5 rounded-lg border border-amber-500/20">
+          <div className="flex items-center gap-2 text-blue-400 text-xs font-medium bg-blue-500/10 px-3 py-1.5 rounded-lg border border-blue-500/20">
             <ShieldAlert size={15} />
             <span>Restricted TMG Maintenance — All changes are logged to Audit Trail</span>
           </div>
 
           <button 
             onClick={() => showNotification('All master data records saved & synchronized.')}
-            className="px-3.5 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold rounded-lg transition-all flex items-center gap-1.5 shadow-md shadow-indigo-900/30 cursor-pointer"
+            className="px-4 py-2 btn-cta text-xs rounded-lg flex items-center gap-1.5 cursor-pointer"
           >
             <Save size={14} />
             <span>Save All Records</span>
@@ -289,7 +314,7 @@ export default function MasterData() {
                           const val = e.target.value
                           setGlData(glData.map(r => r.id === row.id ? { ...r, principal_gl: val } : r))
                         }}
-                        className="bg-slate-950 border border-slate-800 rounded px-2 py-1 text-xs text-white focus:ring-1 focus:ring-emerald-500 w-28 font-mono"
+                        className="glass-input rounded px-2 py-1 text-xs w-full min-w-[120px] font-mono"
                       />
                     </td>
                     <td className="px-4 py-3 font-mono text-slate-300">
@@ -300,7 +325,7 @@ export default function MasterData() {
                           const val = e.target.value
                           setGlData(glData.map(r => r.id === row.id ? { ...r, interest_exp_gl: val } : r))
                         }}
-                        className="bg-slate-950 border border-slate-800 rounded px-2 py-1 text-xs text-white focus:ring-1 focus:ring-emerald-500 w-28 font-mono"
+                        className="glass-input rounded px-2 py-1 text-xs w-full min-w-[120px] font-mono"
                       />
                     </td>
                     <td className="px-4 py-3 font-mono text-slate-300">
@@ -311,7 +336,7 @@ export default function MasterData() {
                           const val = e.target.value
                           setGlData(glData.map(r => r.id === row.id ? { ...r, interest_accrual_gl: val } : r))
                         }}
-                        className="bg-slate-950 border border-slate-800 rounded px-2 py-1 text-xs text-white focus:ring-1 focus:ring-emerald-500 w-28 font-mono"
+                        className="glass-input rounded px-2 py-1 text-xs w-full min-w-[120px] font-mono"
                       />
                     </td>
                     <td className="px-4 py-3 font-mono text-slate-300">
@@ -357,7 +382,7 @@ export default function MasterData() {
                   <tr key={row.id} className="hover:bg-slate-800/50 transition-colors">
                     <td className="px-4 py-3 font-bold text-indigo-400">{row.bank_id}</td>
                     <td className="px-4 py-3 font-mono text-slate-300">{row.effective_from}</td>
-                    <td className="px-4 py-3 font-mono font-bold text-amber-400">
+                    <td className="px-4 py-3 font-mono font-bold text-blue-400">
                       <input 
                         type="number" 
                         step="0.01"
@@ -366,7 +391,7 @@ export default function MasterData() {
                           const val = parseFloat(e.target.value) || 0
                           setRoiData(roiData.map(r => r.id === row.id ? { ...r, rate: val } : r))
                         }}
-                        className="bg-slate-950 border border-slate-800 rounded px-2 py-1 text-xs text-amber-400 font-bold focus:ring-1 focus:ring-emerald-500 w-24 font-mono"
+                        className="glass-input rounded px-2 py-1 text-xs text-blue-400 font-bold w-full min-w-[100px] font-mono"
                       /> %
                     </td>
                     <td className="px-4 py-3 font-medium text-slate-300">{row.calc_basis}</td>
@@ -460,7 +485,7 @@ export default function MasterData() {
                         required 
                         value={newGl.bukrs} 
                         onChange={(e) => setNewGl({ ...newGl, bukrs: e.target.value })} 
-                        className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white font-mono" 
+                        className="w-full glass-input rounded-xl px-3 py-2 font-mono" 
                       />
                     </div>
                     <div>
@@ -471,7 +496,7 @@ export default function MasterData() {
                         placeholder="e.g. TERM_LOAN, WCDL"
                         value={newGl.loan_type} 
                         onChange={(e) => setNewGl({ ...newGl, loan_type: e.target.value })} 
-                        className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white uppercase" 
+                        className="w-full glass-input rounded-xl px-3 py-2 uppercase" 
                       />
                     </div>
                   </div>
@@ -484,7 +509,7 @@ export default function MasterData() {
                         required 
                         value={newGl.principal_gl} 
                         onChange={(e) => setNewGl({ ...newGl, principal_gl: e.target.value })} 
-                        className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white font-mono" 
+                        className="w-full glass-input rounded-xl px-3 py-2 font-mono" 
                       />
                     </div>
                     <div>
@@ -494,7 +519,7 @@ export default function MasterData() {
                         required 
                         value={newGl.interest_exp_gl} 
                         onChange={(e) => setNewGl({ ...newGl, interest_exp_gl: e.target.value })} 
-                        className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white font-mono" 
+                        className="w-full glass-input rounded-xl px-3 py-2 font-mono" 
                       />
                     </div>
                   </div>
@@ -507,7 +532,7 @@ export default function MasterData() {
                         required 
                         value={newGl.interest_accrual_gl} 
                         onChange={(e) => setNewGl({ ...newGl, interest_accrual_gl: e.target.value })} 
-                        className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white font-mono" 
+                        className="w-full glass-input rounded-xl px-3 py-2 font-mono" 
                       />
                     </div>
                     <div>
@@ -517,7 +542,7 @@ export default function MasterData() {
                         required 
                         value={newGl.bank_clearing_gl} 
                         onChange={(e) => setNewGl({ ...newGl, bank_clearing_gl: e.target.value })} 
-                        className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white font-mono" 
+                        className="w-full glass-input rounded-xl px-3 py-2 font-mono" 
                       />
                     </div>
                   </div>
@@ -535,7 +560,7 @@ export default function MasterData() {
                         placeholder="e.g. HDFC, SBI"
                         value={newRoi.bank_id} 
                         onChange={(e) => setNewRoi({ ...newRoi, bank_id: e.target.value })} 
-                        className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white uppercase" 
+                        className="w-full glass-input rounded-xl px-3 py-2 uppercase" 
                       />
                     </div>
                     <div>
@@ -559,7 +584,7 @@ export default function MasterData() {
                         required 
                         value={newRoi.rate} 
                         onChange={(e) => setNewRoi({ ...newRoi, rate: parseFloat(e.target.value) || 0 })} 
-                        className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white font-mono" 
+                        className="w-full glass-input rounded-xl px-3 py-2 font-mono" 
                       />
                     </div>
                     <div>
@@ -567,7 +592,7 @@ export default function MasterData() {
                       <select 
                         value={newRoi.calc_basis} 
                         onChange={(e) => setNewRoi({ ...newRoi, calc_basis: e.target.value })} 
-                        className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white"
+                        className="w-full glass-input rounded-xl px-3 py-2"
                       >
                         <option value="ACTUAL_365">ACTUAL_365</option>
                         <option value="ACTUAL_360">ACTUAL_360</option>
@@ -588,7 +613,7 @@ export default function MasterData() {
                         required 
                         value={newLimit.bukrs} 
                         onChange={(e) => setNewLimit({ ...newLimit, bukrs: e.target.value })} 
-                        className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white font-mono" 
+                        className="w-full glass-input rounded-xl px-3 py-2 font-mono" 
                       />
                     </div>
                     <div>
@@ -599,7 +624,7 @@ export default function MasterData() {
                         placeholder="HDFC"
                         value={newLimit.hbkid} 
                         onChange={(e) => setNewLimit({ ...newLimit, hbkid: e.target.value })} 
-                        className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white uppercase" 
+                        className="w-full glass-input rounded-xl px-3 py-2 uppercase" 
                       />
                     </div>
                     <div>
@@ -610,7 +635,7 @@ export default function MasterData() {
                         placeholder="TL01"
                         value={newLimit.hktid} 
                         onChange={(e) => setNewLimit({ ...newLimit, hktid: e.target.value })} 
-                        className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white uppercase" 
+                        className="w-full glass-input rounded-xl px-3 py-2 uppercase" 
                       />
                     </div>
                   </div>
@@ -672,7 +697,7 @@ function TabButton({ active, onClick, children }: { active: boolean; onClick: ()
       onClick={onClick}
       className={`px-4 py-3 font-semibold text-xs transition-all border-b-2 cursor-pointer ${
         active 
-          ? 'text-emerald-400 border-emerald-400 bg-emerald-500/5' 
+          ? 'text-blue-400 border-blue-500 bg-blue-500/10' 
           : 'text-slate-400 border-transparent hover:text-slate-200 hover:border-slate-700'
       }`}
     >

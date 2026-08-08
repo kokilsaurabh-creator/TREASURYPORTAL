@@ -201,12 +201,12 @@ const CreateLoanMaster: React.FC = () => {
           {['Header Details', 'Banking & Limits', 'Rates & Tenor', 'Preview & Attachments'].map((label, i) => (
             <div
               key={i}
-              className={`flex-1 py-4 px-6 text-sm font-medium transition-colors ${
+              className={`flex-1 py-3.5 px-6 text-sm font-semibold transition-all rounded-lg ${
                 step === i + 1
-                  ? 'bg-blue-600 text-white'
+                  ? 'bg-blue-600 text-white shadow-[0_0_20px_rgba(37,99,235,0.4)] border border-blue-400/30'
                   : step > i + 1
-                  ? 'bg-slate-800 text-slate-300'
-                  : 'text-slate-500'
+                  ? 'bg-slate-800/80 text-blue-400 border border-blue-500/20'
+                  : 'text-slate-500 hover:text-slate-400'
               }`}
             >
               Step {i + 1}: {label}
@@ -214,7 +214,7 @@ const CreateLoanMaster: React.FC = () => {
           ))}
         </div>
 
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-8 shadow-2xl">
+        <div className="glass-card rounded-2xl p-8">
           
           {step === 1 && (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
@@ -222,32 +222,32 @@ const CreateLoanMaster: React.FC = () => {
               
               <div className="space-y-2">
                 <label className="text-sm text-slate-400">Company Code (BUKRS)</label>
-                <input name="bukrs" value={formData.bukrs} onChange={handleInputChange} className="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-2.5 text-white" />
+                <input name="bukrs" value={formData.bukrs} onChange={handleInputChange} className="w-full glass-input rounded-lg px-4 py-2.5" />
               </div>
               <div className="space-y-2">
                 <label className="text-sm text-slate-400">Internal No</label>
-                <input name="zint_no" value={formData.zint_no} onChange={handleInputChange} className="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-2.5 text-white" />
+                <input name="zint_no" value={formData.zint_no} onChange={handleInputChange} className="w-full glass-input rounded-lg px-4 py-2.5" />
               </div>
               <div className="space-y-2">
                 <label className="text-sm text-slate-400">Item No</label>
-                <input name="zint_item" value={formData.zint_item} onChange={handleInputChange} className="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-2.5 text-white" />
+                <input name="zint_item" value={formData.zint_item} onChange={handleInputChange} className="w-full glass-input rounded-lg px-4 py-2.5" />
               </div>
               <div className="space-y-2">
                 <label className="text-sm text-slate-400">Project ID</label>
-                <input name="zproject" value={formData.zproject} onChange={handleInputChange} className="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-2.5 text-white" />
+                <input name="zproject" value={formData.zproject} onChange={handleInputChange} className="w-full glass-input rounded-lg px-4 py-2.5" />
               </div>
               <div className="space-y-2">
                 <label className="text-sm text-slate-400">Loan Account No</label>
-                <input name="zloan_no" value={formData.zloan_no} onChange={handleInputChange} className="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-2.5 text-white" />
+                <input name="zloan_no" value={formData.zloan_no} onChange={handleInputChange} className="w-full glass-input rounded-lg px-4 py-2.5" />
               </div>
               
               <div className="col-span-full mt-6 space-y-2">
                 <label className="text-sm text-slate-400">Header Text</label>
-                <input name="bktxt" value={formData.bktxt} onChange={handleInputChange} className="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-2.5 text-white" maxLength={25} />
+                <input name="bktxt" value={formData.bktxt} onChange={handleInputChange} className="w-full glass-input rounded-lg px-4 py-2.5" maxLength={25} />
               </div>
               <div className="col-span-full space-y-2">
                 <label className="text-sm text-slate-400">Narration</label>
-                <textarea name="sgtxt" value={formData.sgtxt} onChange={handleInputChange} className="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-2.5 text-white" rows={2} maxLength={50} />
+                <textarea name="sgtxt" value={formData.sgtxt} onChange={handleInputChange} className="w-full glass-input rounded-lg px-4 py-2.5" rows={2} maxLength={50} />
               </div>
             </div>
           )}
@@ -258,31 +258,31 @@ const CreateLoanMaster: React.FC = () => {
               
               <div className="space-y-2">
                 <label className="text-sm text-slate-400">House Bank</label>
-                <input name="hbkid" value={formData.hbkid} onChange={handleInputChange} className="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-2.5 text-white uppercase" maxLength={5} />
+                <input name="hbkid" value={formData.hbkid} onChange={handleInputChange} className="w-full glass-input rounded-lg px-4 py-2.5 uppercase" maxLength={5} />
               </div>
               <div className="space-y-2">
                 <label className="text-sm text-slate-400">Account ID</label>
-                <input name="hktid" value={formData.hktid} onChange={handleInputChange} className="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-2.5 text-white uppercase" maxLength={5} />
+                <input name="hktid" value={formData.hktid} onChange={handleInputChange} className="w-full glass-input rounded-lg px-4 py-2.5 uppercase" maxLength={5} />
               </div>
               <div className="space-y-2">
                 <label className="text-sm text-slate-400">Currency</label>
-                <input name="waers" value={formData.waers} onChange={handleInputChange} className="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-2.5 text-white uppercase" maxLength={3} />
+                <input name="waers" value={formData.waers} onChange={handleInputChange} className="w-full glass-input rounded-lg px-4 py-2.5 uppercase" maxLength={3} />
               </div>
               <div className="space-y-2">
                 <label className="text-sm text-slate-400">Exchange Rate</label>
-                <input name="kursf" type="number" step="0.00001" value={formData.kursf} onChange={handleInputChange} className="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-2.5 text-white" />
+                <input name="kursf" type="number" step="0.00001" value={formData.kursf} onChange={handleInputChange} className="w-full glass-input rounded-lg px-4 py-2.5" />
               </div>
               <div className="space-y-2">
                 <label className="text-sm text-slate-400">Sanction Limit LC</label>
-                <input name="zsan_lc" type="number" step="0.01" value={formData.zsan_lc} onChange={handleInputChange} className="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-2.5 text-white font-mono" />
+                <input name="zsan_lc" type="number" step="0.01" value={formData.zsan_lc} onChange={handleInputChange} className="w-full glass-input rounded-lg px-4 py-2.5 font-mono" />
               </div>
               <div className="space-y-2">
                 <label className="text-sm text-slate-400">Sanction Limit FC</label>
-                <input name="zsan_fc" type="number" step="0.01" value={formData.zsan_fc} onChange={handleInputChange} className="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-2.5 text-white font-mono" />
+                <input name="zsan_fc" type="number" step="0.01" value={formData.zsan_fc} onChange={handleInputChange} className="w-full glass-input rounded-lg px-4 py-2.5 font-mono" />
               </div>
               <div className="space-y-2">
                 <label className="text-sm text-slate-400">Bank Charges</label>
-                <input name="zb_charg" type="number" step="0.01" value={formData.zb_charg} onChange={handleInputChange} className="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-2.5 text-white font-mono" />
+                <input name="zb_charg" type="number" step="0.01" value={formData.zb_charg} onChange={handleInputChange} className="w-full glass-input rounded-lg px-4 py-2.5 font-mono" />
               </div>
             </div>
           )}
@@ -293,23 +293,23 @@ const CreateLoanMaster: React.FC = () => {
               
               <div className="space-y-2">
                 <label className="text-sm text-slate-400">Loan Start Date</label>
-                <input name="zl_date" type="date" value={formData.zl_date} onChange={handleInputChange} className="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-2.5 text-white [color-scheme:dark]" />
+                <input name="zl_date" type="date" value={formData.zl_date} onChange={handleInputChange} className="w-full glass-input rounded-lg px-4 py-2.5 [color-scheme:dark]" />
               </div>
               <div className="space-y-2">
                 <label className="text-sm text-slate-400">Rate of Interest (%)</label>
-                <input name="zroi" type="number" step="0.01" value={formData.zroi} onChange={handleInputChange} className="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-2.5 text-white" />
+                <input name="zroi" type="number" step="0.01" value={formData.zroi} onChange={handleInputChange} className="w-full glass-input rounded-lg px-4 py-2.5" />
               </div>
               <div className="space-y-2">
                 <label className="text-sm text-slate-400">Tenure (Months)</label>
-                <input name="monat" type="number" value={formData.monat} onChange={handleInputChange} className="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-2.5 text-white" />
+                <input name="monat" type="number" value={formData.monat} onChange={handleInputChange} className="w-full glass-input rounded-lg px-4 py-2.5" />
               </div>
               <div className="space-y-2">
                 <label className="text-sm text-slate-400">Tenure (Days Extension)</label>
-                <input name="ztdays" type="number" value={formData.ztdays} onChange={handleInputChange} className="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-2.5 text-white" />
+                <input name="ztdays" type="number" value={formData.ztdays} onChange={handleInputChange} className="w-full glass-input rounded-lg px-4 py-2.5" />
               </div>
               <div className="space-y-2">
                 <label className="text-sm text-slate-400">Days in Year Basis</label>
-                <select name="zdays" value={formData.zdays} onChange={handleInputChange} className="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-2.5 text-white">
+                <select name="zdays" value={formData.zdays} onChange={handleInputChange} className="w-full glass-input rounded-lg px-4 py-2.5">
                   <option value={365}>365 (Actual/365)</option>
                   <option value={366}>366 (Actual/366 Leap)</option>
                   <option value={360}>360 (Actual/360)</option>
@@ -317,7 +317,7 @@ const CreateLoanMaster: React.FC = () => {
               </div>
               <div className="space-y-2">
                 <label className="text-sm text-slate-400">Maturity Date (Auto-calculated)</label>
-                <input name="zm_date" type="date" value={formData.zm_date} readOnly className="w-full bg-slate-800/50 border border-slate-700/50 rounded-lg px-4 py-2.5 text-slate-400 cursor-not-allowed [color-scheme:dark]" />
+                <input name="zm_date" type="date" value={formData.zm_date} readOnly className="w-full glass-input opacity-60 rounded-lg px-4 py-2.5 cursor-not-allowed [color-scheme:dark]" />
               </div>
             </div>
           )}
@@ -329,7 +329,7 @@ const CreateLoanMaster: React.FC = () => {
                 <button
                   onClick={handlePreview}
                   disabled={previewLoading}
-                  className="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded-lg font-medium transition-colors text-sm flex items-center gap-2"
+                  className="btn-secondary px-4 py-2 rounded-lg text-sm flex items-center gap-2"
                 >
                   {previewLoading ? 'Generating...' : 'Generate Schedule Preview'}
                 </button>
@@ -360,7 +360,7 @@ const CreateLoanMaster: React.FC = () => {
                     file:rounded-full file:border-0
                     file:text-sm file:font-semibold
                     file:bg-blue-600 file:text-white
-                    hover:file:bg-blue-700 transition-all cursor-pointer"
+                    hover:file:bg-blue-500 transition-all cursor-pointer"
                 />
                 {file && <p className="mt-4 text-emerald-400 text-sm">Selected: {file.name}</p>}
               </div>
@@ -372,8 +372,8 @@ const CreateLoanMaster: React.FC = () => {
             <button
               type="button"
               onClick={() => setStep(s => Math.max(1, s - 1))}
-              className={`px-6 py-2.5 rounded-lg font-medium transition-colors ${
-                step === 1 ? 'opacity-0 pointer-events-none' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
+              className={`px-6 py-2.5 rounded-lg transition-colors ${
+                step === 1 ? 'opacity-0 pointer-events-none' : 'btn-secondary'
               }`}
             >
               Back
@@ -383,7 +383,7 @@ const CreateLoanMaster: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setStep(s => Math.min(4, s + 1))}
-                className="px-6 py-2.5 rounded-lg font-medium bg-blue-600 text-white hover:bg-blue-700 transition-colors"
+                className="px-6 py-2.5 rounded-lg btn-primary"
               >
                 Next Step
               </button>
@@ -392,7 +392,7 @@ const CreateLoanMaster: React.FC = () => {
                 type="button"
                 onClick={handleSubmit}
                 disabled={!file || loading}
-                className="px-8 py-2.5 rounded-lg font-medium bg-emerald-600 text-white hover:bg-emerald-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-8 py-2.5 rounded-lg btn-cta disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? 'Submitting...' : 'Submit for Approval'}
               </button>

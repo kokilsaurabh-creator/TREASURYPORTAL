@@ -1,0 +1,45 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap');
+
+@layer base {
+  :root {
+    --brand-primary: 221.2 83.2% 53.3%; /* blue-600 #2563EB */
+    --brand-secondary: 217.2 91.2% 59.8%; /* blue-500 #3B82F6 */
+    --brand-cta: 239 84% 67%; /* indigo-500 #6366F1 */
+    --brand-bg: 222 47% 11%; /* slate-900 #0F172A */
+    --brand-text: 210 40% 98%; /* slate-50 #F8FAFC */
+  }
+
+  body {
+    font-family: 'IBM Plex Sans', sans-serif;
+  }
+}
+
+@layer utilities {
+  .glass-card {
+    @apply bg-slate-900/60 backdrop-blur-xl border border-slate-800 shadow-2xl;
+  }
+  
+  .glass-card-hover {
+    @apply hover:bg-slate-800/80 hover:border-slate-700/80 transition-all duration-300;
+  }
+
+  .glass-header {
+    @apply bg-slate-950/80 backdrop-blur-md border-b border-slate-800/80;
+  }
+
+  .glass-input {
+    @apply bg-slate-950/70 border border-slate-800 text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-all;
+  }
+
+  .btn-primary {
+    @apply bg-blue-600 hover:bg-blue-500 text-white font-semibold transition-all shadow-[0_0_15px_rgba(37,99,235,0.3)] hover:shadow-[0_0_25px_rgba(37,99,235,0.5)];
+  }
+
+  .btn-cta {
+    @apply bg-indigo-600 hover:bg-indigo-500 text-white font-semibold transition-all shadow-[0_0_15px_rgba(99,102,241,0.3)] hover:shadow-[0_0_25px_rgba(99,102,241,0.5)];
+  }
+
+  .btn-secondary {
+    @apply bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-800 font-semibold transition-all;
+  }
+}
